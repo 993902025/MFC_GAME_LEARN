@@ -14,8 +14,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	// Bitmap
-	CBitmap* bitmap[4][4];
-	//CBitmap* bitmap;
+	CBitmap* player[4][4];
+	CBitmap* ground;
+	//CBitmap* player;
 	CDC* mdc;
 	afx_msg void OnPaint();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

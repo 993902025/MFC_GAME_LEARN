@@ -9,34 +9,35 @@ using namespace std;
 
 int i, x, y, width, height;
 int dir,index;
+int t1;
+int fps1;
+CString st;
 // GameWnd
 
 IMPLEMENT_DYNCREATE(GameWnd, CFrameWnd)
 
 GameWnd::GameWnd()
-	//: bitmap(NULL)
+	//: player(NULL)
 	//, mdc(NULL)
 {
-	Create(NULL, "创建窗口");
+	Create(NULL, "草泥马逼得");
 	char ch[8];
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
 		{
 			sprintf(ch, "%d.%d.bmp", i + 1,j + 1);
-			bitmap[i][j] = new CBitmap;
-			bitmap[i][j]->m_hObject = LoadImage(NULL, ch, IMAGE_BITMAP, 64, 96, LR_LOADFROMFILE);
+			player[i][j] = new CBitmap;
+			player[i][j]->m_hObject = LoadImage(NULL, ch, IMAGE_BITMAP, 64, 96, LR_LOADFROMFILE);
 		}
 	}
 	
-	//bitmap = new CBitmap;
-	//bitmap->m_hObject = LoadImage(NULL, "1.bmp", IMAGE_BITMAP, 64, 96, LR_LOADFROMFILE);
 	mdc = new CDC;
 	RECT rc;
 	CClientDC dc(this);
 	GetClientRect(&rc);
 	mdc->CreateCompatibleDC(&dc);
-	mdc->SelectObject(bitmap[0][0]);
+	//mdc->SelectObject(player[0][0]);
 	i = 0;
 	dir = 0;
 	index = 0;
@@ -44,7 +45,13 @@ GameWnd::GameWnd()
 	height = rc.bottom;
 	x = width/2 - 32;
 	y = height /2 - 48;
-	dc.BitBlt(x, y, 64, 96, mdc, 0, 0, SRCCOPY);
+	int t1 = 0;
+	int fps1 = 1;
+	CString st = "";
+	ground = new CBitmap;
+	ground->m_hObject = LoadImage(NULL, "groud1.bmp", IMAGE_BITMAP, width, height, LR_LOADFROMFILE);
+
+	//dc.BitBlt(x, y, 64, 96, mdc, 0, 0, SRCCOPY);
 }
 
 GameWnd::~GameWnd()
@@ -68,7 +75,11 @@ void GameWnd::OnPaint()
 	CPaintDC dc(this); // device context for painting
 	//if (i>0)
 	//{
-		dc.BitBlt(x , y, 64, 96, mdc, 0, 0, SRCCOPY);
+	mdc->SelectObject(ground);
+	dc.BitBlt(0, 0, width, height, mdc, 0, 0, SRCCOPY);
+	mdc->SelectObject(player[0][0]);
+	dc.BitBlt(x , y, 64, 96, mdc, 0, 0, SRCCOPY);
+
 	//}
 	//else
 	//{
@@ -85,33 +96,53 @@ int GameWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// TODO:  在此添加您专用的创建代码
 	
-	//SetTimer(1, 500, NULL);
+	SetTimer(1, 20, NULL);
 	return 0;
 }
 
 
 void GameWnd::OnTimer(UINT_PTR nIDEvent)
 {
+
+	//st = "fps:" + fps1;
+	
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	CClientDC dc(this);
-	if (dir >= 4)
+	fps1++;
+	if (fps1 * 20 >= 1000)
 	{
-		dir = 0;
+		fps1 = 1;
+		t1++;
 	}
-	if (index<4)
-	{
-		mdc->SelectObject(bitmap[dir][index]); //[0][0]-1.1.bmp [0][1]-1.2.bmp	[1][3]-2.4.bmp
-		index++;
-	}
-	else
-	{
-		index = 0;
-		dir++;
-		mdc->SelectObject(bitmap[dir][index]);
-	}
-	dc.BitBlt(0, 0, 64, 96, mdc, 0, 0, SRCCOPY);
+	st.Format(_T("FPS:%.2d  TIME:%2d"), fps1, t1);
+	dc.TextOut(width/2, 10, st);
+	//OnKeyDown();
 	CFrameWnd::OnTimer(nIDEvent);
 }
+
+//测试原地播放各方向动画的
+//void GameWnd::OnTimer(UINT_PTR nIDEvent)
+//{
+//	// TODO: 在此添加消息处理程序代码和/或调用默认值
+//	CClientDC dc(this);
+//	if (dir >= 4)
+//	{
+//		dir = 0;
+//	}
+//	if (index<4)
+//	{
+//		mdc->SelectObject(player[dir][index]); //[0][0]-1.1.bmp [0][1]-1.2.bmp	[1][3]-2.4.bmp
+//		index++;
+//	}
+//	else
+//	{
+//		index = 0;
+//		dir++;
+//		mdc->SelectObject(player[dir][index]);
+//	}
+//	dc.BitBlt(0, 0, 64, 96, mdc, 0, 0, SRCCOPY);
+//	CFrameWnd::OnTimer(nIDEvent);
+//}
 
 
 void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -231,7 +262,7 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 	}
 
-	mdc->SelectObject(bitmap[dir][index]);
+	mdc->SelectObject(player[dir][index]);
 	dc.BitBlt(x, y, 64, 96, mdc, 0, 0, SRCCOPY);
 	cout << dir + 1 << endl;
 	CFrameWnd::OnKeyDown(nChar, nRepCnt, nFlags);
