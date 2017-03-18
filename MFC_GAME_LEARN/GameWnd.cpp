@@ -118,7 +118,7 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	CClientDC dc(this);
 	dc.BitBlt(x, y, 64, 96, mdc, 0, 0, WHITENESS);
-	if (nChar == VK_DOWN)
+	if (nChar == VK_DOWN || nChar == VK_S)
 	{
 		if (y > height-96)
 		{
@@ -127,9 +127,9 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		else
 		{
 			y += 20;
-			if (y > height - 96)
+			if (y >= height - 96)
 			{
-				y == height - 96 - 20;
+				y = height - 96 - 20;
 			}
 		}
 		if (dir == 0)
@@ -146,7 +146,7 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			index = 0;
 		}
 	}
-	if (nChar == VK_LEFT)
+	if (nChar == VK_LEFT || nChar == VK_A)
 	{
 		if (x < 0)
 		{
@@ -155,9 +155,9 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		else
 		{
 			x -= 20;
-			if (x < 0)
+			if (x <= 0)
 			{
-				x == 0 + 20;
+				x = 0 + 20;
 			}
 		}
 		if (dir == 1)
@@ -174,7 +174,7 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			index = 0;
 		}
 	}
-	if (nChar == VK_RIGHT)
+	if (nChar == VK_RIGHT || nChar == VK_D)
 	{
 		if (x > width - 64)
 		{
@@ -183,9 +183,9 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		else
 		{
 			x += 20;
-			if (x > width - 64)
+			if (x >= width - 64)
 			{
-				x == width - 64 - 20;
+				x = width - 64 - 20;
 			}
 		}
 		if (dir == 2)
@@ -202,7 +202,7 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			index = 0;
 		}
 	}
-	if (nChar == VK_UP)
+	if (nChar == VK_UP || nChar == VK_W)
 	{
 		if (y < 0)
 		{
@@ -211,9 +211,9 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		else
 		{
 			y -= 20;
-			if (y < 0)
+			if (y <= 0)
 			{
-				y == 0+20;
+				y = 0+20;
 			}
 		}
 		if (dir == 3)
