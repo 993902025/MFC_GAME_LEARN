@@ -129,7 +129,7 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			y += 20;
 			if (y > height - 96)
 			{
-				y == height - 96;
+				y == height - 96 - 20;
 			}
 		}
 		if (dir == 0)
@@ -148,7 +148,18 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	if (nChar == VK_LEFT)
 	{
-		x -= 20;
+		if (x < 0)
+		{
+			;
+		}
+		else
+		{
+			x -= 20;
+			if (x < 0)
+			{
+				x == 0 + 20;
+			}
+		}
 		if (dir == 1)
 		{
 			index++;
@@ -165,7 +176,18 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	if (nChar == VK_RIGHT)
 	{
-		x += 20;
+		if (x > width - 64)
+		{
+			;
+		}
+		else
+		{
+			x += 20;
+			if (x > width - 64)
+			{
+				x == width - 64 - 20;
+			}
+		}
 		if (dir == 2)
 		{
 			index++;
@@ -182,8 +204,19 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	if (nChar == VK_UP)
 	{
-		y -= 20;
-		if (dir == 0)
+		if (y < 0)
+		{
+			;
+		}
+		else
+		{
+			y -= 20;
+			if (y < 0)
+			{
+				y == 0+20;
+			}
+		}
+		if (dir == 3)
 		{
 			index++;
 			if (index == 4)
@@ -193,7 +226,7 @@ void GameWnd::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 		else
 		{
-			dir = 0;
+			dir = 3;
 			index = 0;
 		}
 	}
